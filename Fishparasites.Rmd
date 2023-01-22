@@ -1,0 +1,201 @@
+---
+title: "Fish parasites"
+output: html_notebook
+---
+
+
+```{r}
+library(bipartite)
+
+TN=read.csv("Data/TamilNadu.csv")
+
+TN[is.na(TN)]=0
+
+rownames(TN)=TN[,1]
+
+TN=TN[,-1]
+
+
+plotweb(TN, text.rot = 90)
+colnam=rgb(1,0.5,0.5, 0.75)
+colnam2=rgb(94/256,155/256,209/256, 1)
+colnam3=rgb(85/256,85/256,85/256, 1)
+TN2=TN[,sort(colnames(TN))]
+plotweb(TN2, method = "normal", empty = TRUE, labsize = 1.7, ybig = 1, y.width.low = 0.1,y.width.high = 0.1, low.spacing = NULL, high.spacing = NULL, arrow="no", col.interaction= colnam, bor.col.interaction =colnam, bor.col.high=colnam3, bor.col.low=colnam2, high.lablength = NULL, low.lablength = NULL, sequence= NULL, low.abun.col=colnam2, bor.low.abun.col =colnam2, high.abun.col=colnam3, bor.high.abun.col=colnam3, text.rot=90, text.high.col=colnam3, text.low.col=colnam2, adj.high=NULL, adj.low=NULL, plot.axes = FALSE, low.y=0.5, high.y=1.5, add=FALSE, y.lim=c(-0.5,2.35), x.lim=NULL, low.plot=TRUE, high.plot=TRUE, high.xoff = 0, low.xoff = 0, high.lab.dis = NULL, low.lab.dis = NULL, abuns.type="none", col.low=colnam2, col.high = colnam3)
+
+TN_networklevel=networklevel(TN, weighted = FALSE)
+TN_nodelevel=specieslevel(TN)
+```
+
+```{r}
+Odisha=read.csv("Data/Odisha.csv")
+
+Odisha[is.na(Odisha)]=0
+
+rownames(Odisha)=Odisha[,1]
+
+Odisha=Odisha[,-1]
+
+plotweb(Odisha, text.rot = 90)
+colnam=rgb(246/256,205/256,68/256, 0.75)
+colnam2=rgb(94/256,155/256,209/256, 1)
+colnam3=rgb(85/256,85/256,85/256, 1)
+Odisha2=Odisha[,sort(colnames(Odisha))]
+plotweb(Odisha2, method = "normal", empty = TRUE, labsize = 1.7, ybig = 1, y.width.low = 0.1,y.width.high = 0.1, low.spacing = NULL, high.spacing = NULL, arrow="no", col.interaction= colnam, bor.col.interaction =colnam, bor.col.high=colnam3, bor.col.low=colnam2, high.lablength = NULL, low.lablength = NULL, sequence= NULL, low.abun.col=colnam2, bor.low.abun.col =colnam2, high.abun.col=colnam3, bor.high.abun.col=colnam3, text.rot=90, text.high.col=colnam3, text.low.col=colnam2, adj.high=NULL, adj.low=NULL, plot.axes = FALSE, low.y=0.5, high.y=1.5, add=FALSE, y.lim=c(-0.5,2.35), x.lim=NULL, low.plot=TRUE, high.plot=TRUE, high.xoff = 0, low.xoff = 0, high.lab.dis = NULL, low.lab.dis = NULL, abuns.type="none", col.low=colnam2, col.high = colnam3)
+
+
+Odisha_networklevel=networklevel(Odisha, weighted = FALSE)
+Odisha_nodelevel=specieslevel(Odisha)
+```
+
+```{r}
+WB=read.csv("Data/WestBengalv2.csv")
+
+WB[is.na(WB)]=0
+
+rownames(WB)=WB[,1]
+
+WB=WB[,-1]
+
+plotweb(WB, text.rot = 90)
+colnam=rgb(210/256,158/256,210/256, 0.70)
+colnam2=rgb(94/256,155/256,209/256, 1)
+colnam3=rgb(85/256,85/256,85/256, 1)
+WB2=WB[,sort(colnames(WB))]
+plotweb(WB2, method = "normal", empty = TRUE, labsize = 1.7, ybig = 1, y.width.low = 0.1,y.width.high = 0.1, low.spacing = NULL, high.spacing = NULL, arrow="no", col.interaction= colnam, bor.col.interaction =colnam, bor.col.high=colnam3, bor.col.low=colnam2, high.lablength = NULL, low.lablength = NULL, sequence= NULL, low.abun.col=colnam2, bor.low.abun.col =colnam2, high.abun.col=colnam3, bor.high.abun.col=colnam3, text.rot=90, text.high.col=colnam3, text.low.col=colnam2, adj.high=NULL, adj.low=NULL, plot.axes = FALSE, low.y=0.5, high.y=1.5, add=FALSE, y.lim=c(-0.5,2.35), x.lim=NULL, low.plot=TRUE, high.plot=TRUE, high.xoff = 0, low.xoff = 0, high.lab.dis = NULL, low.lab.dis = NULL, abuns.type="none", col.low=colnam2, col.high = colnam3)
+
+WB_networklevel=networklevel(WB, weighted = FALSE)
+WB_nodelevel=specieslevel(WB)
+```
+
+
+```{r}
+networklevel_all=rbind(WB_networklevel,Odisha_networklevel,TN_networklevel)
+rownames(networklevel_all)=c("WestBengal","Odisha","TamilNadu")
+```
+
+
+
+```{r}
+write.csv(WB_nodelevel[["higher level"]],"data/parasite_WB_node.csv")
+write.csv(TN_nodelevel[["higher level"]],"data/parasite_TN_node.csv")
+write.csv(Odisha_nodelevel[["higher level"]],"data/parasite_Odisha_node.csv")
+```
+
+
+```{r}
+parasite_deg=read.csv("Data/Parasite_all_deg.csv")
+parasite_deg$State=as.factor(parasite_deg$State)
+parasite_deg$RegionAttachmnet=as.factor(parasite_deg$RegionAttachmnet)
+
+summary(lm(parasite_deg$degree~parasite_deg$RegionAttachmnet))
+
+parasite_deg2=parasite_deg[-which(parasite_deg$Species=="Cymothoa indica"),]
+parasite_deg2=parasite_deg2[-which(parasite_deg2$Species=="Catoessa boscii"),]
+fixed.dum <-lm(degree~RegionAttachmnet + factor(State)-1, data = parasite_deg)
+#fixed.dum <-lm(degree~RegionAttachmnet, data = parasite_deg2)
+summary(fixed.dum)
+
+av <- aov(fixed.dum)
+summary(av)
+
+tukey.test <- TukeyHSD(av)
+tukey.test
+
+boxplot(parasite_deg$degree~parasite_deg$RegionAttachmnet)
+p <- ggplot(parasite_deg, aes(x=RegionAttachmnet, y=degree, fill=RegionAttachmnet)) +     geom_violin()
+p
+```
+
+```{r}
+TN_list= shuffle.web(TN, 1000, legacy=F)
+WB_list= shuffle.web(WB, 1000, legacy=F)
+Odisha_list= shuffle.web(Odisha, 1000, legacy=F)
+```
+
+```{r}
+fish_TN=read.csv("Data/Fish_TN.csv")
+fish_WB=read.csv("Data/Fish_WB.csv")
+fish_Odisha=read.csv("Data/Fish_Odisha.csv")
+
+library(data.table)
+wide=read.csv("Data/TamilNadu.csv")
+wide[is.na(wide)]=0
+long <- melt(setDT(wide), id.vars = c("X"), variable.name = "Parasite")
+colnames(long)[1]="Species"
+long$State="TamilNadu"
+long$Fish_school=fish_TN$Schooling[match(long$Species,fish_TN$Species)]
+X=parasite_deg[which(parasite_deg$State=="TamilNadu"),]
+
+
+
+for(i in 1:nrow(X)){
+  X$parasite[i]=paste(strsplit(X$Species[i]," ")[[1]][1], strsplit(X$Species[i]," ")[[1]][2], sep = ".")
+}
+long$Para_RegionAttachmnet=X$RegionAttachmnet[match(long$Parasite,X$parasite)]
+long$Fish_Habitat=fish_TN$Habitat[match(long$Species,fish_TN$Species)]
+long$Fish_MB=fish_TN$Marine_Brackish[match(long$Species,fish_TN$Species)]
+long[is.na(long)]=0
+
+wide=read.csv("Data/Odisha.csv")
+wide[is.na(wide)]=0
+long_O <- melt(setDT(wide), id.vars = c("X"), variable.name = "Parasite")
+colnames(long_O)[1]="Species"
+long_O$State="Odisha"
+long_O$Fish_school=fish_Odisha$Schooling[match(long_O$Species,fish_Odisha$Species)]
+X=parasite_deg[which(parasite_deg$State=="Odisha"),]
+
+for(i in 1:nrow(X)){
+  X$parasite[i]=paste(strsplit(X$Species[i]," ")[[1]][1], strsplit(X$Species[i]," ")[[1]][2], sep = ".")
+}
+long_O$Para_RegionAttachmnet=X$RegionAttachmnet[match(long_O$Parasite,X$parasite)]
+long_O$Fish_Habitat=fish_Odisha$Habitat[match(long_O$Species,fish_Odisha$Species)]
+long_O$Fish_MB=fish_Odisha$Marine_Brackish[match(long_O$Species,fish_Odisha$Species)]
+long_O[is.na(long_O)]=0
+
+wide=read.csv("Data/WestBengal.csv")
+wide[is.na(wide)]=0
+long_W <- melt(setDT(wide), id.vars = c("X"), variable.name = "Parasite")
+colnames(long_W)[1]="Species"
+long_W$State="WestBengal"
+long_W$Fish_school=fish_WB$Schooling[match(long_W$Species,fish_WB$Species)]
+X=parasite_deg[which(parasite_deg$State=="West Bengal"),]
+
+for(i in 1:nrow(X)){
+  X$parasite[i]=paste(strsplit(X$Species[i]," ")[[1]][1], strsplit(X$Species[i]," ")[[1]][2], sep = ".")
+}
+long_W$Para_RegionAttachmnet=X$RegionAttachmnet[match(long_W$Parasite,X$parasite)]
+long_W$Fish_Habitat=fish_WB$Habitat[match(long_W$Species,fish_WB$Species)]
+long_W$Fish_MB=fish_WB$Marine_Brackish[match(long_W$Species,fish_WB$Species)]
+long_W[is.na(long_W)]=0
+
+longall=rbind(long,long_O,long_W)
+longall_1=longall[which(longall$value==1),]
+longall$Fish_school=as.factor(longall$Fish_school)
+longall$Para_RegionAttachmnet=as.factor(longall$Para_RegionAttachmnet)
+
+
+
+fishall=rbind(fish_TN,fish_Odisha,fish_WB)
+
+fishall[is.na(fishall)]=0
+
+pel=longall_1[which(longall_1$Fish_Habitat=="P"),]
+dem=longall_1[which(longall_1$Fish_Habitat=="D"),]
+
+mar=longall_1[which(longall_1$Fish_MB=="M"),]
+marfish=fishall[which(fishall$Marine_Brackish=="M"),]
+marB=longall_1[which(longall_1$Fish_MB=="MB"),]
+marBfish=fishall[which(fishall$Marine_Brackish=="MB"),]
+```
+
+
+```{r}
+parasite_table=parasite_deg[,-2]
+parasite_table2=reshape(parasite_table, idvar = "Species", timevar = "State", direction = "wide")
+colnames(parasite_table2)=c("Species","Odisha","Tamil Nadu", "West Bengal")
+parasite_table2=parasite_table2[,c("Species","West Bengal","Odisha","Tamil Nadu" )]
+```
+
+
+
