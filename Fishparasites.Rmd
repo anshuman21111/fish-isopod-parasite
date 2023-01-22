@@ -107,11 +107,6 @@ p <- ggplot(parasite_deg, aes(x=RegionAttachmnet, y=degree, fill=RegionAttachmne
 p
 ```
 
-```{r}
-TN_list= shuffle.web(TN, 1000, legacy=F)
-WB_list= shuffle.web(WB, 1000, legacy=F)
-Odisha_list= shuffle.web(Odisha, 1000, legacy=F)
-```
 
 ```{r}
 fish_TN=read.csv("Data/Fish_TN.csv")
@@ -189,6 +184,11 @@ marB=longall_1[which(longall_1$Fish_MB=="MB"),]
 marBfish=fishall[which(fishall$Marine_Brackish=="MB"),]
 ```
 
+```{r}
+TN_list= shuffle.web(TN, 1000, legacy=F)
+WB_list= shuffle.web(WB, 1000, legacy=F)
+Odisha_list= shuffle.web(Odisha, 1000, legacy=F)
+```
 
 ```{r}
 parasite_table=parasite_deg[,-2]
@@ -197,5 +197,96 @@ colnames(parasite_table2)=c("Species","Odisha","Tamil Nadu", "West Bengal")
 parasite_table2=parasite_table2[,c("Species","West Bengal","Odisha","Tamil Nadu" )]
 ```
 
+```{r}
+TN_list2=NULL
+for (i in 1:length(TN_list)) {
+  rownames(TN_list[[i]])=rownames(TN)
+  colnames(TN_list[[i]])=colnames(TN)
+  wide=TN_list[[i]]
+  wide$X=rownames(wide)
+  wide[is.na(wide)]=0
+  long <- melt(setDT(wide), id.vars = c("X"), variable.name = "Parasite")
+  colnames(long)[1]="Species"
+  long$State="TamilNadu"
+  long$Fish_school=fish_TN$Schooling[match(long$Species,fish_TN$Species)]
+  X=parasite_deg[which(parasite_deg$State=="TamilNadu"),]
 
+  for(j in 1:nrow(X)){
+  X$parasite[j]=paste(strsplit(X$Species[j]," ")[[1]][1], ... = strsplit(X$Species[j]," ")[[1]][2], sep = ".")
+}
+  long$Para_RegionAttachmnet=X$RegionAttachmnet[match(long$Parasite,X$parasite)]
+  long$Fish_Habitat=fish_TN$Habitat[match(long$Species,fish_TN$Species)]
+  long$Fish_MB=fish_TN$Marine_Brackish[match(long$Species,fish_TN$Species)]
+  long[is.na(long)]=0
+  
+  TN_list2[[i]]= long
+}
+
+WB_list2=NULL
+for (i in 1:length(WB_list)) {
+  rownames(WB_list[[i]])=rownames(WB)
+  colnames(WB_list[[i]])=colnames(WB)
+  wide=WB_list[[i]]
+  wide$X=rownames(wide)
+  wide[is.na(wide)]=0
+  long <- melt(setDT(wide), id.vars = c("X"), variable.name = "Parasite")
+  colnames(long)[1]="Species"
+  long$State="TamilNadu"
+  long$Fish_school=fish_WB$Schooling[match(long$Species,fish_WB$Species)]
+  X=parasite_deg[which(parasite_deg$State=="TamilNadu"),]
+
+  for(j in 1:nrow(X)){
+  X$parasite[j]=paste(strsplit(X$Species[j]," ")[[1]][1], ... = strsplit(X$Species[j]," ")[[1]][2], sep = ".")
+}
+  long$Para_RegionAttachmnet=X$RegionAttachmnet[match(long$Parasite,X$parasite)]
+  long$Fish_Habitat=fish_WB$Habitat[match(long$Species,fish_WB$Species)]
+  long$Fish_MB=fish_WB$Marine_Brackish[match(long$Species,fish_WB$Species)]
+  long[is.na(long)]=0
+  
+  WB_list2[[i]]= long
+}
+
+Odisha_list2=NULL
+for (i in 1:length(Odisha_list)) {
+  rownames(Odisha_list[[i]])=rownames(Odisha)
+  colnames(Odisha_list[[i]])=colnames(Odisha)
+  wide=Odisha_list[[i]]
+  wide$X=rownames(wide)
+  wide[is.na(wide)]=0
+  long <- melt(setDT(wide), id.vars = c("X"), variable.name = "Parasite")
+  colnames(long)[1]="Species"
+  long$State="TamilNadu"
+  long$Fish_school=fish_Odisha$Schooling[match(long$Species,fish_Odisha$Species)]
+  X=parasite_deg[which(parasite_deg$State=="TamilNadu"),]
+
+  for(j in 1:nrow(X)){
+  X$parasite[j]=paste(strsplit(X$Species[j]," ")[[1]][1], ... = strsplit(X$Species[j]," ")[[1]][2], sep = ".")
+}
+  long$Para_RegionAttachmnet=X$RegionAttachmnet[match(long$Parasite,X$parasite)]
+  long$Fish_Habitat=fish_Odisha$Habitat[match(long$Species,fish_Odisha$Species)]
+  long$Fish_MB=fish_Odisha$Marine_Brackish[match(long$Species,fish_Odisha$Species)]
+  long[is.na(long)]=0
+  
+  Odisha_list2[[i]]= long
+}
+
+#eg_swimming_habitatsalinity
+sw_MB=NULL
+sw_M=NULL
+nsw_MB=NULL
+nsw_M=NULL
+for (i in 1:length(TN_list2)){
+  long_rand=TN_list2[[i]]
+  sw_MB=c(sw_MB,table(long_rand$Fish_school,long_rand$Fish_MB)["1","MB"])
+  sw_M=c(sw_MB,table(long_rand$Fish_school,long_rand$Fish_MB)["1","M"])
+  nsw_MB=c(sw_MB,table(long_rand$Fish_school,long_rand$Fish_MB)["0","MB"])
+  nsw_M=c(sw_MB,table(long_rand$Fish_school,long_rand$Fish_MB)["0","M"])
+}
+
+shapiro.test(sw_MB)
+val=table(long$Fish_school,long$Fish_MB)["1","MB"]
+pnorm(val,mean(sw_MB),sd(sw_MB))
+
+
+```
 
