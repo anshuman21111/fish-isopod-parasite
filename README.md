@@ -10,3 +10,12 @@
 <sup>6</sup>Western Regional Centre, Zoological Survey of India, Akurdi, Pune, Maharashtra, India
 *equal contributions
 
+
+**File details:**
+All data files are in .csv (comma separated value format).
+
+WB.csv, Odisha.csv and TN.csv are the binary bipartite networks in cleaned format for West Bengal, Odisha and Tamil Nadu. 1 means presence of an interaction.
+
+file starting with "Fish_AAA.csv" contains the fish metadata for the ecosystem AAA. Habitat column is habitat tye (pelagic (P), demersal (D) or benthic (B)), Schooling column has 1 for schooling fish and N/A for non-schooling ones, Marine_Brackish column has habitat salininty information (M is Marine, MB is Brackish-Marine, and B is Brackish)
+
+file starting with "Parasite_AAA.csv" contains the parasite attachment typr for ecosystem AAA. M is Buccal, B is Branchial and E is External atatchment.
