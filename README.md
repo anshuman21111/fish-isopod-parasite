@@ -10,5 +10,3 @@
 <sup>6</sup>Western Regional Centre, Zoological Survey of India, Akurdi, Pune, Maharashtra, India
 *equal contributions
 
-
-<sup>\*</sup>*contributed equally*
