@@ -1,4 +1,4 @@
-# Niche Partitioning and host specialisation in fish-parasitizing isopods: latitudinal and trait-dependent patterns from three ecosystems on the east coast of India #
+# Niche Partitioning and host specialisation in fish-parasitizing isopods: latitudinal and trait-dependent patterns on the east coast of India #
 
 *Team members:* Sandeep Kumar Mohapatra<sup>1,2,\*</sup>, Anshuman Swain<sup>3,4,\*</sup>,Dipanjan Roy<sup>5</sup>, Rajesh Kumar Behera<sup>1</sup>, Basudev Tripathy<sup>6</sup>, Jaya Kishor Seth<sup>2</sup>,  Anil Mohapatra<sup>1</sup>
 
