@@ -15,8 +15,10 @@
 **File details:**
 All data files are in .csv (comma separated value format).
 
-WB.csv, and Odisha.csv are the binary bipartite networks in cleaned format for West Bengal, and Odisha. 1 means presence of an interaction. For detailed quantiative data, please contact the authors.
+WB.csv, and Odisha.csv are the binary bipartite networks in cleaned format for West Bengal, and Odisha. 1 means presence of an interaction. For detailed quantiative data, please contact the authors. The summarized quantitative data is in OWB_weighted.csv.
 
 file starting with "Fish_AAA.csv" contains the fish metadata for the ecosystem AAA. Habitat column is habitat tye (pelagic (P), demersal (D) or benthic (B)), Schooling column has 1 for schooling fish and N/A for non-schooling ones, Marine_Brackish column has habitat salininty information (M is Marine, MB is Brackish-Marine, and B is Brackish)
 
-file starting with "Parasite_AAA.csv" contains the parasite attachment typr for ecosystem AAA. M is Buccal, B is Branchial and E is External atatchment.
+file starting with "Parasite_AAA.csv" contains the parasite attachment typr for ecosystem AAA. M is Buccal, B is Branchial and E is skin atatchment.
+
+OWB_prop contains the network metric values for testing hypothesisi about E being generalists.
